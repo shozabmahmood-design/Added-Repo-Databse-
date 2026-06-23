@@ -16,6 +16,12 @@ $app = new Illuminate\Foundation\Application(
 );
 
 $app->bind('path.public', function () {
+    // Check if we are running in cPanel (where carexllc and public_html are siblings)
+    $siblingPublicHtml = dirname(dirname(__DIR__)) . '/public_html';
+    if (basename(dirname(__DIR__)) === 'carexllc' && file_exists($siblingPublicHtml)) {
+        return $siblingPublicHtml;
+    }
+    // Local / Default Laravel path
     return dirname(__DIR__);
 });
 
